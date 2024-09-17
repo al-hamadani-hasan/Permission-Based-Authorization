@@ -1,1 +1,77 @@
-.vs/
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.nupkg
+*.snk
+*.suo
+*.user
+*.userosscache
+*.suo
+*.dll
+*.exe
+*.pdb
+*.dbmdl
+*.dbproj
+*.cache
+*.log
+*.log.*
+*.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.suo
+*.csproj.user
+*.csproj.nuget.*
+*.swp
+*.DS_Store
+*.gitignore
+
+# ASP.NET Core
+wwwroot/
+appsettings*.json
+*.db
+*.bak
+
+# Rider
+.idea/
+
+# Local History for JetBrains Rider
+.localhistory/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# MacOS
+*.DS_Store
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+
+# Node modules
+node_modules/
+
+# Yarn
+.yarn/
+
+# Npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# JetBrains Rider
+.idea/
+
+# Build results
+bin/
+obj/
