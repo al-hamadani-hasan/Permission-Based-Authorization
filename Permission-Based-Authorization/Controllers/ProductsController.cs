@@ -1,24 +1,21 @@
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Permission_Based_Authorization.Models;
 using System.Diagnostics;
 
 namespace Permission_Based_Authorization.Controllers
 {
-    public class HomeController : Controller
+    [AllowAnonymous]
+    public class ProductsController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<ProductsController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public ProductsController(ILogger<ProductsController> logger)
         {
             _logger = logger;
         }
 
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
         {
             return View();
         }

@@ -1,0 +1,22 @@
+﻿@model Permission_Based_Authorization.Models.LoginViewModel
+
+<form asp-action="Login" asp-controller="Account" method="post">
+    <div class="w-50">
+        <fieldset>
+            <label asp-for="Username">Username</label>
+            <input asp-for="Username" type="text" class="form-control" placeholder="Enter username" />
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </fieldset>
+        <fieldset>
+            <label asp-for="Password" class="password">Password</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="*******" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </fieldset>
+    </div>
+
+    <input type="hidden" name="redirect" value="@ViewData["redirect"]" />
+
+    <button class="btn btn-primary m-2 me-0 ms-0 w-25" type="submit">Login</button>
+
+    @Html.ValidationMessage("ValidationSummary", new { @class = "validation-summary text-danger" })
+</form>
