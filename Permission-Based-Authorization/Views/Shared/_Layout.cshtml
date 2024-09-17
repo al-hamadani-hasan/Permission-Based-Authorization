@@ -27,13 +27,12 @@
                     @if (User.Identity!.IsAuthenticated)
                     {
                         <div class="dropdown">
-                            <ul class="dropdown-menu shadow" aria-labelledby="account__dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="account-dropdown-menu" data-bs-toggle="dropdown" aria-expanded="false">
+                                @User.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.GivenName)!.Value
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="account-dropdown-menu">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
                             </ul>
-                            <a role="button" class="d-flex align-items-center text-dark" id="account__dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="~/assets/img/user.jpg" alt="" width="38" height="38" class="rounded-circle me-2">
-                                <strong>@User.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.GivenName)!.Value</strong>
-                            </a>
                         </div>
                     }
                 </div>

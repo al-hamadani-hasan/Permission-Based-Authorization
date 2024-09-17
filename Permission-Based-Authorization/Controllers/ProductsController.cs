@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Permission_Based_Authorization.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly ILogger<ProductsController> _logger;

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Permission_Based_Authorization.Contexts.UserManagement;
 using Permission_Based_Authorization.Providers;
 using Permission_Based_Authorization.Repositories;
+using Permission_Based_Authorization.Seeds;
 using Permission_Based_Authorization.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,6 +61,16 @@ builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 #endregion
 
 var app = builder.Build();
+
+#region Initialize Default Account
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var ctx = services.GetRequiredService<UserManagementDbContext>();
+    var hasher = services.GetRequiredService<IHasherService>();
+    DefaultAccount.Seed(ctx, hasher);
+}
+#endregion
 
 #region Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
