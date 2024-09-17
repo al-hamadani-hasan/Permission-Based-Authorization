@@ -1,3 +1,37 @@
-﻿<div class="text-center">
+﻿@using Permission_Based_Authorization.Constants
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
+    var roleName = User.IsInRole("Administrator") ? "Administrator" :
+                   User.IsInRole("Editor") ? "Editor" :
+                   User.IsInRole("Viewer") ? "Viewer" :
+                   "No Role";
+}
+
+<div class="text-center">
     <h1 class="display-4">Welcome to our products store</h1>
+
+    <h2 class="mt-5 mb-1 display-6">You are logged in as an <strong>@roleName</strong> & have the following permissions</h2>
+    <div class="m-4 me-0 ms-0">
+        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Predefined.Read)).Result.Succeeded)
+        {
+            <button type="button" class="btn btn-primary">Read</button>
+        }
+        
+        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Predefined.Create)).Result.Succeeded)
+        {
+            <button type="button" class="btn btn-success">Create</button>
+        }
+
+        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Predefined.Update)).Result.Succeeded)
+        {
+            <button type="button" class="btn btn-warning">Edit</button>
+        }
+        
+        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Predefined.Delete)).Result.Succeeded)
+        {
+            <button type="button" class="btn btn-danger">Delete</button>
+        }
+    </div>
 </div>
