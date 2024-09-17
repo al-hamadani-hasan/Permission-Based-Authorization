@@ -17,6 +17,7 @@ artifacts/
 *.log
 *.log.*
 *.vs/
+.vs/
 .vscode/
 .idea/
 *.suo
