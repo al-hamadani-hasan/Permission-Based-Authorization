@@ -31,7 +31,7 @@ artifacts/
 
 # ASP.NET Core
 wwwroot/
-appsettings*.json
+# appsettings*.json
 *.db
 *.bak
 
