@@ -30,10 +30,10 @@ artifacts/
 *.gitignore
 
 # ASP.NET Core
-wwwroot/
+# wwwroot/
 # appsettings*.json
-*.db
-*.bak
+# *.db
+# *.bak
 
 # Rider
 .idea/
