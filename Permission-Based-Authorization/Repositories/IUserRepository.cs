@@ -9,11 +9,9 @@ namespace Permission_Based_Authorization.Repositories
 {
     public interface IUserRepository
     {
-        Task<bool> CreateAsync(AddUserViewModel model, Guid userId);
+        Task<bool> CreateAsync(AddUserViewModel model);
 
-        Task<bool> UpdateAsync(EditUserViewModel model, Guid userId);
-
-        Task<bool> ChangeStatusByIdAsync(Guid Id, Guid userId);
+        Task<bool> ChangeStatusByIdAsync(Guid Id);
 
         Task<User> FindByIdAsync(Guid Id);
 
@@ -68,7 +66,7 @@ namespace Permission_Based_Authorization.Repositories
             return rowsAffected > 0 ? true : default;
         }
 
-        public async Task<bool> ChangeStatusByIdAsync(Guid Id, Guid userId)
+        public async Task<bool> ChangeStatusByIdAsync(Guid Id)
         {
             var user = await _ctx.Users
                 .Where(x => x.Id == Id)
@@ -93,7 +91,7 @@ namespace Permission_Based_Authorization.Repositories
             return rowsAffected > 0 ? true : default;
         }
 
-        public async Task<bool> CreateAsync(AddUserViewModel model, Guid userId)
+        public async Task<bool> CreateAsync(AddUserViewModel model)
         {
             var salt = _hasher.Salt();
             var PasswordHash = _hasher.Hasher(model.Password!, salt);
@@ -259,7 +257,7 @@ namespace Permission_Based_Authorization.Repositories
             return roles;
         }
 
-        public async Task<bool> UpdateAsync(EditUserViewModel model, Guid userId)
+        public async Task<bool> UpdateAsync(EditUserViewModel model)
         {
             var user = await _ctx.Users
                 .FindAsync(model.UserId);
