@@ -31,7 +31,7 @@ namespace Permission_Based_Authorization.Seeds
                 var user = new User
                 {
                     Id = newUserId,
-                    FullName = "Hasan Al-Hamadani",
+                    FullName = "Administrator",
                     Username = "Administrator",
                     NormalizedUsername = "Administrator".ToUpper().Normalize(),
                     Email = "your-email@email.com",
