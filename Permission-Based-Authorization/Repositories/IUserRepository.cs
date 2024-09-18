@@ -257,30 +257,6 @@ namespace Permission_Based_Authorization.Repositories
             return roles;
         }
 
-        public async Task<bool> UpdateAsync(EditUserViewModel model)
-        {
-            var user = await _ctx.Users
-                .FindAsync(model.UserId);
-
-            if (user == null) return default;
-
-            if (model.ChangePassword)
-            {
-                var salt = _hasher.Salt();
-                var PasswordHash = _hasher.Hasher(model.Password!, salt);
-
-                user.PasswordHash = PasswordHash;
-                user.Salt = salt;
-            }
-
-            user.FullName = model.FullName!;
-            user.Username = model.Username!;
-            user.AccessPrivilege = model.AccessPrivilege!;
-
-            int rowsAffected = await _ctx.SaveChangesAsync();
-            return rowsAffected > 0 ? true : default;
-        }
-
         public async Task<bool> UpdateUserRoleAsync(User user, Guid Id)
         {
             var role = await _ctx.Roles

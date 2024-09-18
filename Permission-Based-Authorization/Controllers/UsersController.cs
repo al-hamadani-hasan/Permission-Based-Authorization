@@ -67,6 +67,18 @@ namespace Permission_Based_Authorization.Controllers
             return RedirectToAction("Index");
         }
 
-        
+        [HttpGet]
+        [Route("change-status")]
+        public async Task<IActionResult> ChangeStatus(Guid Id)
+        {
+            var user = await _userRepository.FindByIdAsync(Id);
+
+            if (user != null)
+            {
+                await _userRepository.ChangeStatusByIdAsync(Id);
+            }
+            
+            return RedirectToAction("Index");
+        }
     }
 }
