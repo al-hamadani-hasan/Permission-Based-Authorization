@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Permission_Based_Authorization.Contexts.UserManagement.Models.Role>
+
+@{
+    var iteration = 1;
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <h2>Roles available in the system</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div>
+                    <p>The table below contains user roles for this system with the ability to add, modify, delete and manage permissions. The available roles are:(<span>Administrator</span>, <span>Editor</span>, <span>Viewer</span>).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var role in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @iteration
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <span>@role.Name</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            View actions
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item" asp-controller="Roles" asp-action="Permissions" asp-route-Id="@role.Id">
+                                                    <i class="bi bi-wrench"></i> Manage permissions
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            iteration = iteration + 1;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
