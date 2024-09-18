@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Permission_Based_Authorization.Contexts.UserManagement.Models;
 using Permission_Based_Authorization.Models;
 using Permission_Based_Authorization.Repositories;
 using System.Xml;
@@ -13,13 +14,16 @@ namespace Permission_Based_Authorization.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
         public UsersController(
             IConfiguration configuration,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IRoleRepository roleRepository)
         {
             _configuration = configuration;
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
         [HttpGet]
@@ -79,6 +83,76 @@ namespace Permission_Based_Authorization.Controllers
             }
             
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Route("roles")]
+        public async Task<IActionResult> UserRoles(Guid Id)
+        {
+            var userRoles = new List<UserRolesViewModel>();
+            var user = await _userRepository.FindByIdAsync(Id);
+
+            var roles = await _roleRepository.RolesAsync();
+
+            foreach (var role in roles)
+            {
+                var userRolesViewModel = new UserRolesViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name!
+                };
+
+                var checkResult = await _roleRepository.IsInRoleAsync(user, role.Id);
+
+                if (checkResult)
+                {
+                    userRolesViewModel.Selected = true;
+                }
+                else
+                {
+                    userRolesViewModel.Selected = false;
+                }
+
+                userRoles.Add(userRolesViewModel);
+            }
+
+            var model = new ManageUserRolesViewModel()
+            {
+                UserId = Id,
+                UserRoles = userRoles
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("roles")]
+        public async Task<IActionResult> UserRoles(Guid Id, ManageUserRolesViewModel model)
+        {
+            var user = await _userRepository.FindByIdAsync(Id);
+
+            var currentRoles = await _userRepository.RolesAsync(user);
+
+            var selectedRoles = model.UserRoles
+                .Where(x => x.Selected)
+                .ToList();
+
+            var newRoles = new List<Role>();
+
+            foreach (var role in selectedRoles)
+            {
+                newRoles.Add(new Role
+                {
+                    Id = role.RoleId,
+                    Name = role.RoleName
+                });
+            }
+
+            var deleteRoles = await _userRepository.RemoveFromRolesAsync(user, currentRoles);
+
+            await _userRepository.AddToRolesAsync(user, newRoles);
+            
+            return RedirectToActionPermanent("Index");
         }
     }
 }

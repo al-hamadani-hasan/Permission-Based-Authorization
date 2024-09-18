@@ -1,0 +1,65 @@
+﻿@model Permission_Based_Authorization.Models.ManageUserRolesViewModel
+
+@{
+    var iteration = 1;
+}
+
+<form asp-controller="Users" asp-action="UserRoles" asp-route-Id="@Model.UserId" method="post" class="d-inline">
+    <input asp-for="@Model.UserId" type="hidden" />
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h2>Available roles for selected user</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <p>The table below contains the roles available to the user within his authority.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.UserRoles.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @iteration
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.UserRoles[i].RoleId" type="hidden" />
+                                        <input asp-for="@Model.UserRoles[i].RoleName" type="hidden" />
+                                        @Model.UserRoles[i].RoleName
+                                    </td>
+                                    <td class="text-center">
+                                        <input asp-for="@Model.UserRoles[i].Selected" class="form-check-input" />
+                                    </td>
+                                </tr>
+
+                                iteration = iteration + 1;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-3">
+            <a asp-area="" asp-controller="Users" asp-action="Index" class="btn btn-secondary me-1 ms-0">Back</a>
+            <button type="submit" class="btn btn-success me-0 ms-1">Save</button>
+        </div>
+    </div>
+</form>
