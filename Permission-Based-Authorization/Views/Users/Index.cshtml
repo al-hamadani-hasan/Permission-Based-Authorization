@@ -1,0 +1,123 @@
+﻿@using X.PagedList;
+@using X.Web.PagedList
+@model IPagedList<Permission_Based_Authorization.Contexts.UserManagement.Models.User>
+
+@{
+    var iteration = 1;
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <h2>Registered users and their information</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div>
+                    <div>
+                        <p>The table below contains the names and information of registered users with the ability to modify data and manage roles. To add a new user, click on the Add user button (when adding a user, the account type - Editor - will be added automatically)</p>
+                    </div>
+                    <div>
+                        <a asp-area="" asp-controller="Users" asp-action="CreateUser" class="btn btn-success"><i class="bi bi-plus-lg"></i> Add user</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col table-container">
+                <table class="table table-striped table-bordered">
+                    @if (Model.Count > 0)
+                    {
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Account status</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @iteration
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <span>@user.Username</span>
+                                                <br>
+                                                <small>@user.Id</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <span>@user.FullName</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                @if (@user.LockoutEnabled is false)
+                                                {
+                                                    <small>Active</small>
+                                                }
+                                                else
+                                                {
+                                                    <small>Inactive</small>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="dropdown">
+                                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                View actions
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    @if (@user.LockoutEnabled is false)
+                                                    {
+                                                        <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="ChangeStatus" asp-route-Id="@user.Id">Disable</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="ChangeStatus" asp-route-Id="@user.Id">Enable</a>
+                                                    }
+                                                </li>
+                                                <li><a class="dropdown-item" href="#">Edit user info</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="UserRoles" asp-route-Id="@user.Id">Manage roles</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                iteration = iteration + 1;
+                            }
+                        </tbody>
+                    }
+                </table>
+            </div>
+            <div class="list-pager">
+                @Html.PagedListPager(Model,
+                         page => Url.Action("Index",
+                         new { page }),
+                         new PagedListRenderOptions()
+                {
+                    DisplayItemSliceAndTotal = true,
+                    LiElementClasses = new string[] { "page-item" },
+                    PageClasses = new string[] { "page-link" },
+                    Display = PagedListDisplayMode.IfNeeded
+                })
+            </div>
+        </div>
+    </div>
+</div>
