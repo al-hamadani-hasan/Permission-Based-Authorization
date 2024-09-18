@@ -1,0 +1,86 @@
+﻿@model Permission_Based_Authorization.Claims.PermissionClaims
+
+@{
+    var iteration = 1;
+}
+
+<form asp-controller="Roles" method="post" asp-action="UpdatePermissions" class="d-inline">
+    <input asp-for="@Model.RoleId" type="hidden" />
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h2>Available permissions for selected role</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <p>The table below contains the permissions available to the user within his authority.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.RoleClaims!.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @iteration
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.RoleClaims[i].Value" type="hidden" />
+                                        @if (@Model.RoleClaims[i].Value == "Permissions.Read")
+                                        {
+                                            <span>Read</span>
+                                        }
+                                        else if (@Model.RoleClaims[i].Value == "Permissions.Create")
+                                        {
+                                            <span>Create</span>
+                                        }
+                                        else if (@Model.RoleClaims[i].Value == "Permissions.Update")
+                                        {
+                                            <span>Update</span>
+                                        }
+                                        else if (@Model.RoleClaims[i].Value == "Permissions.Delete")
+                                        {
+                                            <span>Delete</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (@Model.RoleClaims[i].Value == "Permissions.Read")
+                                        {
+                                            <input asp-for="@Model.RoleClaims[i].Selected" class="form-check-input" readonly disabled />
+                                            <input type="hidden" asp-for="@Model.RoleClaims[i].Selected" />
+                                        }
+                                        else
+                                        {
+                                            <input asp-for="@Model.RoleClaims[i].Selected" class="form-check-input" />
+                                        }
+                                    </td>
+                                </tr>
+
+                                iteration = iteration + 1;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-3">
+            <a asp-area="" asp-controller="Roles" asp-action="Index" class="btn btn-info me-1 ms-0">Back</a>
+            <button type="submit" class="btn btn-success me-0 ms-1">Save</button>
+        </div>
+    </div>
+</form>

@@ -26,7 +26,7 @@
 
         @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Predefined.Update)).Result.Succeeded)
         {
-            <button type="button" class="btn btn-warning">Edit</button>
+            <button type="button" class="btn btn-warning">Update</button>
         }
         
         @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Predefined.Delete)).Result.Succeeded)
